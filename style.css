@@ -9,7 +9,52 @@ body {
   margin: 0;
 }
 
+/* モバイル用コントロールボタン */
+.controls {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+.controls button {
+  font-size: 20px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #444;
+  color: #fff;
+}
+.controls button:active {
+  background: #666;
+}
+
 canvas {
+  touch-action: none; /* prevent double-tap zoom */
   background: #000;
   border: 2px solid #555;
+}
+
+/* モバイル用コントロールボタン */
+.controls {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+.controls button {
+  font-size: 20px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #444;
+  color: #fff;
+}
+.controls button:active {
+  background: #666;
 }
