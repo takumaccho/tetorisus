@@ -213,7 +213,7 @@ function drawMatrix(matrix, offset) {
 }
 
 let dropCounter = 0;
-let dropInterval = 666;
+let dropInterval = 500; // 2x 速さ
 let lastTime = 0;
 
 function update(time = 0) {
@@ -263,6 +263,44 @@ bindBtn("btn-right", () => playerMove(1));
 bindBtn("btn-down", playerDrop);
 bindBtn("btn-rot-l", () => playerRotate(-1));
 bindBtn("btn-rot-r", () => playerRotate(1));
+
+// ---- スワイプ & タップジェスチャー ----
+let touchStartX = 0;
+let touchStartY = 0;
+let touchStartTime = 0;
+
+canvas.addEventListener("touchstart", (e) => {
+  const t = e.touches[0];
+  touchStartX = t.clientX;
+  touchStartY = t.clientY;
+  touchStartTime = Date.now();
+});
+
+canvas.addEventListener("touchend", (e) => {
+  const t = e.changedTouches[0];
+  const dx = t.clientX - touchStartX;
+  const dy = t.clientY - touchStartY;
+  const dt = Date.now() - touchStartTime;
+  const absX = Math.abs(dx);
+  const absY = Math.abs(dy);
+  const SWIPE_THRESHOLD = 40; // px
+
+  if (absX > absY && absX > SWIPE_THRESHOLD) {
+    // 横スワイプ
+    if (dx < 0) playerMove(-1);
+    else playerMove(1);
+    return;
+  }
+  if (absY > absX && dy > SWIPE_THRESHOLD) {
+    // 下スワイプで即落下
+    playerDrop();
+    return;
+  }
+  // タップ(短時間&小移動)で回転
+  if (dt < 250 && absX < 15 && absY < 15) {
+    playerRotate(1);
+  }
+});
 
 playerReset();
 updateScore();
