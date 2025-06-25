@@ -213,7 +213,7 @@ function drawMatrix(matrix, offset) {
 }
 
 let dropCounter = 0;
-let dropInterval = 1000;
+let dropInterval = 666;
 let lastTime = 0;
 
 function update(time = 0) {
@@ -246,6 +246,23 @@ document.addEventListener("keydown", (event) => {
     playerRotate(1);
   }
 });
+
+// モバイル／タッチコントロール
+const bindBtn = (id, action) => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const handler = (e) => {
+    e.preventDefault();
+    action();
+  };
+  ["click", "touchstart"].forEach((evt) => el.addEventListener(evt, handler));
+};
+
+bindBtn("btn-left", () => playerMove(-1));
+bindBtn("btn-right", () => playerMove(1));
+bindBtn("btn-down", playerDrop);
+bindBtn("btn-rot-l", () => playerRotate(-1));
+bindBtn("btn-rot-r", () => playerRotate(1));
 
 playerReset();
 updateScore();
